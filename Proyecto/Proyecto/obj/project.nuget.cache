@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "D6WUAN5/0cDb5T9p6BRzdPGeA4dkm6UqISNcKn9h9ie6hzdI6+xuetwZFGLnOwy9ngxvQbJ9ndqZo7Ykr5f6Tg==",
+  "dgSpecHash": "CvLsKCtFfI1rUCeVNS61uN5HzuctxXAzmbVC6Thp4Pkckq1we52DIRqU4Brpq55AAF8doVYQXoPeIUyH2jfXpA==",
   "success": true,
   "projectFilePath": "D:\\Tareas\\5to Cuatrimestre\\PROG 3\\FINAL\\Final\\FinalProg3\\Proyecto\\Proyecto\\Proyecto.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\DarDan\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -82,6 +82,27 @@ using Proyecto.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 11 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\_Imports.razor"
+using Newtonsoft.Json;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 12 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\_Imports.razor"
+using Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 13 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\_Imports.razor"
+using System.Net.Http.Headers;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/")]
     public partial class Index : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -90,6 +111,90 @@ using Proyecto.Shared;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 68 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\Index.razor"
+      
+    ///////////////////////////////////////////
+
+
+    public string name { get; set; }
+    public string user { get; set; }
+    public string pwd { get; set; }
+    public bool vof = false;
+    public bool vof2 = false;
+    ///////
+
+
+
+    public async Task Registrar()
+    {
+        vof = false;
+        HttpClient http = new HttpClient();
+        var response = await http.GetAsync("https://finalprog3-930fc-default-rtdb.firebaseio.com/Users.json");
+
+        if (response.IsSuccessStatusCode)
+        {
+
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            var data = JsonConvert.DeserializeObject<Dictionary<string, Users>>(content).ToList();
+
+            var data2 = from x in data
+                        select new
+                        {
+                            UserName = x.Value.UserName,
+
+                        };
+
+            foreach (var x in data2)
+            {
+                if (x.UserName == user)
+                {
+                    vof = true;
+
+                }
+
+            }
+            if (!vof)
+            {
+                var values = new Users { Name = name, UserName = user, Password = pwd };
+                var json = JsonConvert.SerializeObject(values, Formatting.Indented);
+
+                var usuario = new StringContent(json);
+
+                http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                var respuesta = await http.PostAsync("https://finalprog3-930fc-default-rtdb.firebaseio.com/Users.json", usuario);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    vof2 = true;
+                    user = "";
+                    pwd = "";
+                    name = "";
+                }
+
+            }
+
+
+
+        }
+
+
+    }
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+#line default
+#line hidden
+#nullable disable
     }
 }
 #pragma warning restore 1591

@@ -82,6 +82,27 @@ using Proyecto.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 11 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\_Imports.razor"
+using Newtonsoft.Json;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 12 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\_Imports.razor"
+using Models;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 13 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\_Imports.razor"
+using System.Net.Http.Headers;
+
+#line default
+#line hidden
+#nullable disable
     public partial class _Imports : System.Object
     {
         #pragma warning disable 1998

@@ -1,7 +1,147 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+
+<div class="container">
+
+    <AuthorizeView>
+        <Authorized>
+            <h1 class="alert alert-success">Bienvenido Usuario: @context.User.Claims.First().Value</h1>
+            <br />
+            <div class="card">
+                <div class="card-header">
+                    <h3>Registrar Usuarios</h3>
+                </div>
+                <div class="card-body">
+                    Nombre:
+                    <input class="form-control" @bind="name" />
+                    Username:
+                    <input class="form-control" @bind="user" />
+                    @if (vof)
+                    {
+                        <h4 class="alert alert-danger">
+                            Este Nombre de usuario no esta disponible
+                        </h4>
+                    }
+                    Password:
+                    <input class="form-control" @bind="pwd" />
+                    <br />
+                    <button class="btn btn-info btn-block" @onclick="(() => Registrar())">Registrar</button>
+                </div>
+            </div>
+            @if (vof2)
+            {
+                <h1 class="alert alert-primary">Usuario Registrado Correctamente</h1>
+            }
+
+        </Authorized>
+        <NotAuthorized>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Login</h3>
+                </div>
+                <div class="card-body">
+                    <form action="cookie" method="post">
+                        UserName:
+                        <input class="form-control" type="text" name="name" />
+                        Password:
+                        <input class="form-control" type="text" name="pass" />
+                        <input type="submit" class="btn btn-info btn-block" value="Iniciar Sesion"/>
+                    </form>
+
+                </div>
+
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+  
+    
+</div>
+
+
+
+
+
+
+@code{
+    ///////////////////////////////////////////
+
+
+    public string name { get; set; }
+    public string user { get; set; }
+    public string pwd { get; set; }
+    public bool vof = false;
+    public bool vof2 = false;
+    ///////
+
+
+
+    public async Task Registrar()
+    {
+        vof = false;
+        vof2 = false;
+        HttpClient http = new HttpClient();
+        var response = await http.GetAsync("https://finalprog3-930fc-default-rtdb.firebaseio.com/Users.json");
+
+        if (response.IsSuccessStatusCode)
+        {
+
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            var data = JsonConvert.DeserializeObject<Dictionary<string, Users>>(content).ToList();
+
+            var data2 = from x in data
+                        select new
+                        {
+                            UserName = x.Value.UserName,
+
+                        };
+
+            foreach (var x in data2)
+            {
+                if (x.UserName == user)
+                {
+                    vof = true;
+
+                }
+
+            }
+            if (!vof)
+            {
+                var values = new Users { Name = name, UserName = user, Password = pwd };
+                var json = JsonConvert.SerializeObject(values, Formatting.Indented);
+
+                var usuario = new StringContent(json);
+
+                http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                var respuesta = await http.PostAsync("https://finalprog3-930fc-default-rtdb.firebaseio.com/Users.json", usuario);
+
+                if (respuesta.IsSuccessStatusCode)
+                {
+                    vof2 = true;
+                    user = "";
+                    pwd = "";
+                    name = "";
+                }
+
+            }
+
+
+
+        }
+
+
+    }
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+}

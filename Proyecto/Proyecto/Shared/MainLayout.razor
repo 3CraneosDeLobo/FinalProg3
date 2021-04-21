@@ -6,8 +6,25 @@
     </div>
 
     <div class="main">
+       
+       
         <div class="top-row px-4">
+
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <AuthorizeView>
+                <Authorized>
+
+                    <form action="cookie" method="get">
+
+                        <input type="submit" class="btn btn-link" value="Cerrar Session" />
+
+                    </form>
+
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/" class="btn  btn-link">Iniciar Session</a>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
 
         <div class="content px-4">

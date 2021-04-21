@@ -29,6 +29,12 @@ namespace Proyecto
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+
+            //COOKIES
+            services.AddAuthentication("Cookies")
+                    .AddCookie();
+        
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,8 +56,15 @@ namespace Proyecto
 
             app.UseRouting();
 
+            //COOKIE
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
