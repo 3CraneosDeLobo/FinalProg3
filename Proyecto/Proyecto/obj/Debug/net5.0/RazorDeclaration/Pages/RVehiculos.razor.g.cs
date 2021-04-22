@@ -133,7 +133,7 @@ using System.IO;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 229 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RVehiculos.razor"
+#line 254 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RVehiculos.razor"
        
     /////////////////
     Funciones fc = new Funciones();
@@ -147,6 +147,7 @@ using System.IO;
     public double lat;
     public double lng;
 
+    public string ID = "";
     public string Marca = "";
     public string Modelo = "";
     public int Year = 2020;
@@ -161,6 +162,10 @@ using System.IO;
     bool vofFinish = false;
 
     string statu = "";
+    int editar = 0;
+    bool vofEdit = false;
+    string imgURL = "";
+    int cambio = 0;
 
     /// METODOS
 
@@ -171,6 +176,7 @@ using System.IO;
         await fc.CargarImagen(files);
 
         mensajeFoto = "Imagen Seleccionada: " + files.FirstOrDefault().Name;
+        cambio = 1;
     }
 
     public async Task Obtener()
@@ -272,7 +278,7 @@ using System.IO;
         var vehiculo = new StringContent(json);
 
         statu = "Paso 1";
-        
+
 
         var response = await http.PatchAsync(URI + id + ".json", vehiculo);
 
@@ -281,11 +287,117 @@ using System.IO;
         if (response.IsSuccessStatusCode)
         {
             await OnInitializedAsync();
-            statu = "paso 3";
+
         }
 
     }
 
+
+    /// Editar
+
+    void Edit(string id,
+        string carga,
+        string color,
+
+        string foto,
+        string latitud,
+        string longitud,
+        string marca,
+        string matricula,
+        string modelo,
+        string pasajeros,
+        string price,
+        string seguro,
+        string tipo,
+        string year
+        )
+    {
+        vofFinish = false;
+
+        editar = 1;
+        ID = id;
+        Carga = carga;
+        Color = color;
+        url = foto;
+        lat = Convert.ToDouble(latitud);
+        lng = Convert.ToDouble(longitud);
+        Marca = marca;
+        Matricula = matricula;
+        Modelo = modelo;
+        Pasajeros = pasajeros;
+        Precio = price;
+        Seguro = seguro;
+        Tipo = tipo;
+        Year = Convert.ToInt32(year);
+
+        imgURL = url;
+        vofEdit = true;
+
+
+
+    }
+
+
+    async Task Update()
+    {
+        if(cambio != 0)
+        {
+            await Obtener();
+        }
+
+        HttpClient http = new HttpClient();
+
+
+        string URI = $"https://finalprog3-930fc-default-rtdb.firebaseio.com/Vehiculos/{ID}.json";
+
+        var values = new Vehiculos { Carga = Carga, Color = Color,  Foto = url, Marca = Marca, Matricula = Matricula, Modelo = Modelo, Tipo = Tipo, Year = Year.ToString(), Pasajeros = Pasajeros, Price = Precio, Seguro = Seguro, Lat = lat.ToString(), Lng = lng.ToString() };
+        var json = JsonConvert.SerializeObject(values, Formatting.Indented);
+
+        var vehiculo = new StringContent(json);
+
+        var response = http.PatchAsync(URI, vehiculo);
+        if (response.Result.IsSuccessStatusCode)
+        {
+            vofEdit = false;
+            editar = 0;
+            vofFinish = true;
+            cambio = 0;
+           
+            Carga = "";
+            Color = "";
+
+
+            url = "";
+            Marca = "";
+            Matricula = "";
+            Modelo = "";
+            Tipo = "Carro";
+            Year = 2020;
+            Pasajeros = "0";
+            Precio = "0";
+            Seguro = "";
+            lat = 0;
+            lng = 0;
+            mensajeFoto = "";
+
+            await OnInitializedAsync();
+        }
+    }
+
+    /// Guardar
+
+
+    async Task Guardar()
+    {
+        if(editar == 0)
+        {
+            await EnviarDatos();
+        }
+        else
+        {
+            await Update();
+        }
+    }
 
     /// OBTENER DATOS
 

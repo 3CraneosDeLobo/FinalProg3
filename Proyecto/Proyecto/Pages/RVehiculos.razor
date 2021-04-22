@@ -61,8 +61,15 @@
                 Numero de Seguro:
                 <input class="form-control" @bind="Seguro" />
             </div>
-            <div class="form-group">
+            <div class="form-group" >
                 Foto:
+                @if (vofEdit)
+            {
+                <div >
+                    Foto Anterior:
+                    <img src="@imgURL" width="100" height="100" />
+                </div>
+            }
                 <BlazorInputFile.InputFile class="form-control" OnChange="Cambio" />
                 <h3>@mensajeFoto</h3>
             </div>
@@ -76,7 +83,7 @@
                 Longitud:
                 <input type="number" id="lng" @bind="lng" class="form-control" disabled />
             </div>
-            <button class="btn btn-info btn-block" @onclick="EnviarDatos">Guardar Registro</button>
+            <button class="btn btn-info btn-block" @onclick="Guardar">Guardar Registro</button>
             @if (vofFinish)
             {
                 <br />
@@ -186,7 +193,25 @@
                                     }
                                 </td>
                                 <td>
-                                    <button class="btn btn-success btn-block">Editar</button>
+                                    <button 
+                                     class="btn btn-success btn-block" 
+                                     @onclick="(() => Edit(x.ID,
+                                       x.Carga,
+                                       x.Color,
+                                       x.Foto,
+                                       x.Lat,
+                                       x.Lng,
+                                       x.Marca,
+                                       x.Matricula,
+                                       x.Modelo,
+                                       x.Pasajeros,
+                                       x.Price,
+                                       x.Seguro,
+                                       x.Tipo,
+                                       x.Year
+                                       ))">
+                                    Editar
+                                    </button>
                                 </td>
                                 <td>
                                  
@@ -223,7 +248,7 @@
     </div>
     <div class="mt-5"></div>
 </div>
-<h1>@statu</h1>
+<h1>@mensajeFoto</h1>
 
 
 @code {
@@ -239,6 +264,7 @@
     public double lat;
     public double lng;
 
+    public string ID = "";
     public string Marca = "";
     public string Modelo = "";
     public int Year = 2020;
@@ -253,6 +279,10 @@
     bool vofFinish = false;
 
     string statu = "";
+    int editar = 0;
+    bool vofEdit = false;
+    string imgURL = "";
+    int cambio = 0;
 
     /// METODOS
 
@@ -263,6 +293,7 @@
         await fc.CargarImagen(files);
 
         mensajeFoto = "Imagen Seleccionada: " + files.FirstOrDefault().Name;
+        cambio = 1;
     }
 
     public async Task Obtener()
@@ -364,7 +395,7 @@
         var vehiculo = new StringContent(json);
 
         statu = "Paso 1";
-        
+
 
         var response = await http.PatchAsync(URI + id + ".json", vehiculo);
 
@@ -373,11 +404,117 @@
         if (response.IsSuccessStatusCode)
         {
             await OnInitializedAsync();
-           
+
         }
 
     }
 
+
+    /// Editar
+
+    void Edit(string id,
+        string carga,
+        string color,
+
+        string foto,
+        string latitud,
+        string longitud,
+        string marca,
+        string matricula,
+        string modelo,
+        string pasajeros,
+        string price,
+        string seguro,
+        string tipo,
+        string year
+        )
+    {
+        vofFinish = false;
+
+        editar = 1;
+        ID = id;
+        Carga = carga;
+        Color = color;
+        url = foto;
+        lat = Convert.ToDouble(latitud);
+        lng = Convert.ToDouble(longitud);
+        Marca = marca;
+        Matricula = matricula;
+        Modelo = modelo;
+        Pasajeros = pasajeros;
+        Precio = price;
+        Seguro = seguro;
+        Tipo = tipo;
+        Year = Convert.ToInt32(year);
+
+        imgURL = url;
+        vofEdit = true;
+
+
+
+    }
+
+
+    async Task Update()
+    {
+        if(cambio != 0)
+        {
+            await Obtener();
+        }
+
+        HttpClient http = new HttpClient();
+
+
+        string URI = $"https://finalprog3-930fc-default-rtdb.firebaseio.com/Vehiculos/{ID}.json";
+
+        var values = new Vehiculos { Carga = Carga, Color = Color,  Foto = url, Marca = Marca, Matricula = Matricula, Modelo = Modelo, Tipo = Tipo, Year = Year.ToString(), Pasajeros = Pasajeros, Price = Precio, Seguro = Seguro, Lat = lat.ToString(), Lng = lng.ToString() };
+        var json = JsonConvert.SerializeObject(values, Formatting.Indented);
+
+        var vehiculo = new StringContent(json);
+
+        var response = http.PatchAsync(URI, vehiculo);
+        if (response.Result.IsSuccessStatusCode)
+        {
+            vofEdit = false;
+            editar = 0;
+            vofFinish = true;
+            cambio = 0;
+           
+            Carga = "";
+            Color = "";
+
+
+            url = "";
+            Marca = "";
+            Matricula = "";
+            Modelo = "";
+            Tipo = "Carro";
+            Year = 2020;
+            Pasajeros = "0";
+            Precio = "0";
+            Seguro = "";
+            lat = 0;
+            lng = 0;
+            mensajeFoto = "";
+
+            await OnInitializedAsync();
+        }
+    }
+
+    /// Guardar
+
+
+    async Task Guardar()
+    {
+        if(editar == 0)
+        {
+            await EnviarDatos();
+        }
+        else
+        {
+            await Update();
+        }
+    }
 
     /// OBTENER DATOS
 
