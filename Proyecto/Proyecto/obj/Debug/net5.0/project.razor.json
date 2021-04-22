@@ -111,6 +111,39 @@
         }
       },
       {
+        "HashCode": -1361402219,
+        "Kind": "Components.Component",
+        "Name": "Proyecto.Pages.RedirectToLogin",
+        "AssemblyName": "Proyecto",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "RedirectToLogin"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Proyecto.Pages.RedirectToLogin"
+        }
+      },
+      {
+        "HashCode": 464050700,
+        "Kind": "Components.Component",
+        "Name": "Proyecto.Pages.RedirectToLogin",
+        "AssemblyName": "Proyecto",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Proyecto.Pages.RedirectToLogin"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Proyecto.Pages.RedirectToLogin",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
         "HashCode": 1678255161,
         "Kind": "Components.Component",
         "Name": "Proyecto.App",
@@ -15960,6 +15993,11 @@
     {
       "FilePath": "d:\\Tareas\\5to Cuatrimestre\\PROG 3\\FINAL\\Final\\FinalProg3\\Proyecto\\Proyecto\\App.razor",
       "TargetPath": "App.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "d:\\Tareas\\5to Cuatrimestre\\PROG 3\\FINAL\\Final\\FinalProg3\\Proyecto\\Proyecto\\Pages\\RedirectToLogin.razor",
+      "TargetPath": "Pages\\RedirectToLogin.razor",
       "FileKind": "component"
     },
     {

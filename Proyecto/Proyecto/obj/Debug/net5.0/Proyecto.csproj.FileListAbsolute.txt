@@ -59,3 +59,6 @@ D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\D
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\ref\Proyecto.dll
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Proyecto.pdb
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Proyecto.genruntimeconfig.cache
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\RazorDeclaration\Pages\RVehiculos.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Razor\Pages\RVehiculos.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\bin\Debug\net5.0\BlazorInputFile.dll

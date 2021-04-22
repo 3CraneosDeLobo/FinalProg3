@@ -103,6 +103,20 @@ using System.Net.Http.Headers;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 14 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\_Imports.razor"
+using BlazorInputFile;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\_Imports.razor"
+using System.IO;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/")]
     public partial class Index : Microsoft.AspNetCore.Components.ComponentBase
     {
@@ -129,6 +143,7 @@ using System.Net.Http.Headers;
     public async Task Registrar()
     {
         vof = false;
+        vof2 = false;
         HttpClient http = new HttpClient();
         var response = await http.GetAsync("https://finalprog3-930fc-default-rtdb.firebaseio.com/Users.json");
 
