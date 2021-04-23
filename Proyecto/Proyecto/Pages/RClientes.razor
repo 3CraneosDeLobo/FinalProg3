@@ -1,0 +1,476 @@
+﻿@page "/RClientes"
+@attribute [Authorize]
+
+
+<div class="container">
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Registrar Cliente</h3>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                Cedula:
+                <input class="form-control" @bind="Cedula" />
+            </div>
+            <div class="form-group">
+                Nombre:
+                <input class="form-control" @bind="Nombre" />
+            </div>
+            <div class="form-group">
+                Apellido:
+                <input class="form-control" @bind="Apellido" />
+            </div>
+            <div class="form-group">
+                Correo:
+                <input class="form-control" @bind="Correo" />
+            </div>
+            <div class="form-group">
+                Licencia:
+                <input class="form-control" @bind="Licencia" />
+            </div>
+            <div class="form-group">
+                Nacionalidad:
+                <input class="form-control" @bind="Nacionalidad" />
+            </div>
+            <div class="form-group">
+                Tipo de Sangre:
+                <select class="form-control" @bind="Sangre">
+                    <option value="A">A</option>
+                    <option value="-A">-A</option>
+                    <option value="B">B</option>
+                    <option value="-B">-B</option>
+                    <option value="AB">AB</option>
+                    <option value="-AB">-AB</option>
+                    <option value="O">O</option>
+                    <option value="-O">-O</option>
+                </select>
+            </div>
+            <div class="form-group">
+                Foto de la Persona:
+
+                <BlazorInputFile.InputFile class="form-control-file" accept="image/*" OnChange="Cambio2" />
+                @mFotoP
+            </div>
+            <div class="form-group">
+                Foto de la Licencia:
+                <BlazorInputFile.InputFile class="form-control-file" accept="image/*" OnChange="Cambio" />
+                @mFotoL
+            </div>
+            <br />
+            <button class="btn btn-primary btn-block" @onclick="Guardar">Guardar</button>
+        </div>
+        <div class="mt-5"></div>
+    </div>
+    @if (vofTabla)
+    {
+
+
+<table class="table table-responsive-sm table-hover mt-5 text-center">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        Foto de Licencia:
+                    </th>
+                    <th scope="col">
+                        Foto del Cliente:
+                    </th>
+                    <th scope="col">
+                        Nombre:
+                    </th>
+                    <th scope="col">
+                        Apellido:
+                    </th>
+                    <th scope="col">
+                        Cedula:
+                    </th>
+                    <th scope="col">
+                        Correo:
+                    </th>
+                    <th scope="col">
+                        Licencia:
+                    </th>
+                    <th scope="col"> 
+                        Nacionalidad:
+                    </th>
+                    <th scope="col">
+                        Tipo de Sangre:
+                    </th>
+                    <th scope="col">
+                        Estado:
+                    </th>
+                    <th scope="col">
+                        Editar:
+                    </th>
+                    <th scope="col">
+                        Habilitar/Deshabilitar:
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var x in clientes)
+                {
+                <tr>
+                    <td>
+                        <a href="@x.FotoL" target="_blank"><img src="@x.FotoL" height="100" width="100" /></a>
+                    </td>
+                    <td>
+                        <a href="@x.FotoP" target="_blank"><img src="@x.FotoP" height="100" width="100" /></a>
+                    </td>
+                    <td>
+                        @x.Nombre
+                    </td>
+                    <td>
+                        @x.Apellido
+                    </td>
+                    <td>
+                        @x.Cedula
+                    </td>
+                    <td>
+                        @x.Correo
+                    </td>
+                    <td>
+                        @x.Licencia
+                    </td>
+                    <td>
+                        @x.Nacionalidad
+                    </td>
+                    <td>
+                        @x.Sangre
+                    </td>
+                    <td>
+                        @if(x.Estado == "YES")
+                    {
+
+
+<h4>HABILITADO</h4>
+                    }
+                    else
+                    {
+                        <h4>DESHABILITADO</h4>
+                    }
+
+                    </td>
+                    <td>
+                        <button class="btn btn-info btn-block" 
+                        @onclick="(()=> Edit(x.ID,
+                                  x.Apellido,
+                                  x.Cedula,
+                                  x.Correo,
+                                  x.FotoL,
+                                  x.FotoP,
+                                  x.Licencia,
+                                  x.Nacionalidad,
+                                  x.Nombre,
+                                  x.Sangre
+                                  ))">EDITAR</button>
+                    </td>
+                    <td>
+                        @if (x.Estado == "YES")
+                        {
+                            <button class="btn btn-danger btn-block" @onclick="(() => ChangeStatus(x.ID, NO))">DESHABILITAR</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-danger btn-block" @onclick="(() => ChangeStatus(x.ID, YES))" >HABILITAR</button>
+                        }
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+
+
+
+</div>
+
+
+
+@code {
+
+    /// ------------------------------- BEGIN ---------------------------------------
+
+    Funciones fc = new Funciones();
+    List<Clientes> clientes;
+    /// ----------------------- VARIABLES --------------------------
+
+    string NO = "NO";
+    string YES = "YES";
+    string urlFotoP = "";
+    string urlFotoL = "";
+    string mFotoP = "";
+    string mFotoL = "";
+    int editar = 0;
+    int cambio = 0;
+    int cambio2 = 0;
+
+    /// VARIABLES DE DATOS
+    string urlFotoPersona = "";
+    string urlFotoLicencia = "";
+    string ID = "";
+    string Apellido = "";
+    string Cedula = "";
+    string Correo = "";
+    string Licencia = "";
+    string Nacionalidad = "";
+    string Nombre = "";
+    string Sangre = "A";
+
+
+
+    // Booleanos
+
+    bool vofTabla = false;
+    bool vofFinish = false;
+    bool vofEdit = false;
+
+    //-----
+
+
+    //----------------------- Cargar Imagenes --------------------------------
+    async Task Cambio(IFileListEntry[] files)
+    {
+        await fc.CargarImagen(files);
+        mFotoL = "Imagen Seleccionada:" + files.FirstOrDefault().Name;
+        cambio = 1;
+
+    }
+    async Task Obtener()
+    {
+
+        urlFotoPersona = await fc.ObtenerURL();
+
+    }
+    async Task Cambio2(IFileListEntry[] files)
+    {
+        await fc.CargarImagen2(files);
+        mFotoP = "Imagen Seleccionada:" + files.FirstOrDefault().Name;
+        cambio2 = 1;
+
+    }
+    async Task Obtener2()
+    {
+
+        urlFotoLicencia = await fc.ObtenerURL2();
+
+    }
+    //------------------- METODOS RELACIONADOS A LA API -----------------
+
+    async Task Guardar()
+    {
+        if (editar == 0)
+        {
+            await EnviarDatos();
+        }
+        else
+        {
+            await Update();
+        }
+    }
+
+    async Task EnviarDatos()
+    {
+        await Obtener();
+        await Obtener2();
+        vofFinish = false;
+        HttpClient http = new HttpClient();
+
+
+        string URI = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Clientes.json";
+
+        var values = new Clientes { Apellido = Apellido, Cedula = Cedula, Correo = Correo, Estado = "YES", FotoL = urlFotoLicencia, FotoP = urlFotoPersona, Licencia = Licencia, Nacionalidad = Nacionalidad, Nombre = Nombre, Sangre = Sangre };
+        var json = JsonConvert.SerializeObject(values, Formatting.Indented);
+
+        var vehiculo = new StringContent(json);
+
+        var res = await http.PostAsync(URI, vehiculo);
+        if (res.IsSuccessStatusCode)
+        {
+            vofFinish = true;
+            urlFotoPersona = "";
+            urlFotoLicencia = "";
+            ID = "";
+            Apellido = "";
+            Cedula = "";
+            Correo = "";
+            Licencia = "";
+            Nacionalidad = "";
+            Nombre = "";
+            Sangre = "A";
+            mFotoP = "";
+            mFotoL = "";
+            await OnInitializedAsync();
+        }
+    }
+
+    void Edit(string id,
+    string apellido,
+    string cedula,
+    string correo,
+    string fotoL,
+    string fotoP,
+    string licencia,
+    string nacionalidad,
+    string nombre,
+    string sangre
+
+    )
+    {
+        vofFinish = false;
+
+        editar = 1;
+        ID = id;
+        Apellido = apellido;
+        Cedula = cedula;
+        Correo = correo;
+        urlFotoPersona = fotoP;
+        urlFotoLicencia = fotoL;
+        Licencia = licencia;
+        Nacionalidad = nacionalidad;
+        Nombre = nombre;
+        Sangre = sangre;
+
+        urlFotoL = urlFotoLicencia;
+        urlFotoP = urlFotoPersona;
+
+
+        vofEdit = true;
+
+
+
+    }
+
+    async Task Update()
+    {
+        if (cambio != 0)
+        {
+            await Obtener();
+
+        }
+        if(cambio2 != 0)
+        {
+            await Obtener2();
+        }
+
+        HttpClient http = new HttpClient();
+
+
+        string URI = $"https://finalprog3-930fc-default-rtdb.firebaseio.com/Clientes/{ID}.json";
+
+        var values = new Clientes { Apellido = Apellido, Cedula = Cedula, Correo = Correo, Estado = "YES", FotoL = urlFotoLicencia, FotoP = urlFotoPersona, Licencia = Licencia, Nacionalidad = Nacionalidad, Nombre = Nombre, Sangre = Sangre };
+        var json = JsonConvert.SerializeObject(values, Formatting.Indented);
+
+        var cliente = new StringContent(json);
+
+        var response = http.PatchAsync(URI, cliente);
+        if (response.Result.IsSuccessStatusCode)
+        {
+            vofEdit = false;
+            editar = 0;
+            vofFinish = true;
+            cambio = 0;
+            cambio2 = 0;
+
+            urlFotoPersona = "";
+            urlFotoLicencia = "";
+            ID = "";
+            Apellido = "";
+            Cedula = "";
+            Correo = "";
+            Licencia = "";
+            Nacionalidad = "";
+            Nombre = "";
+            Sangre = "A";
+            mFotoP = "";
+            mFotoL = "";
+
+
+            await OnInitializedAsync();
+        }
+    }
+
+
+
+
+    async Task ChangeStatus(string id, string status)
+    {
+        HttpClient http = new HttpClient();
+
+
+        string URI = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Clientes/";
+
+        var values = new { Estado = status };
+        var json = JsonConvert.SerializeObject(values, Formatting.Indented);
+
+        var cliente = new StringContent(json);
+
+
+
+        var response = await http.PatchAsync(URI + id + ".json", cliente);
+
+
+
+        if (response.IsSuccessStatusCode)
+        {
+            await OnInitializedAsync();
+
+        }
+
+    }
+
+
+
+
+
+    // ---------------------- Cargar Tabla ------------------------------
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        HttpClient http = new HttpClient();
+        string URI = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Clientes.json";
+
+        var response = await http.GetAsync(URI);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+
+            var datos = JsonConvert.DeserializeObject<Dictionary<string, Clientes>>(content).ToList();
+
+            var datos2 = from xd in datos
+                         select new Clientes
+                         {
+                             ID = xd.Key,
+                             Apellido = xd.Value.Apellido,
+                             Cedula = xd.Value.Cedula,
+                             Correo = xd.Value.Correo,
+                             Estado = xd.Value.Estado,
+                             FotoL = xd.Value.FotoL,
+                             FotoP = xd.Value.FotoP,
+                             Licencia = xd.Value.Licencia,
+                             Nacionalidad = xd.Value.Nacionalidad,
+                             Nombre = xd.Value.Nombre,
+                             Sangre = xd.Value.Sangre
+
+
+
+                         };
+
+            clientes = datos2.ToList();
+            vofTabla = true;
+
+
+        }
+
+
+
+
+
+    }
+
+    // ---------------------------------- END ---------------------------------------
+}

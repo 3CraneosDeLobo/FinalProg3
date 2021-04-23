@@ -118,6 +118,13 @@ using System.IO;
 #line hidden
 #nullable disable
 #nullable restore
+#line 16 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\_Imports.razor"
+using MoreLinq.Extensions;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 2 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RVehiculos.razor"
            [Authorize]
 
@@ -198,9 +205,6 @@ using System.IO;
     {
         return await JS.InvokeAsync<double>("longitud", lng);
     }
-
-
-
     async Task abrirModal()
     {
 

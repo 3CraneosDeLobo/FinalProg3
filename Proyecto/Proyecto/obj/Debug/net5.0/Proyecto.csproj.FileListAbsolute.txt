@@ -62,3 +62,12 @@ D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\D
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\RazorDeclaration\Pages\RVehiculos.razor.g.cs
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Razor\Pages\RVehiculos.razor.g.cs
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\bin\Debug\net5.0\BlazorInputFile.dll
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\RazorDeclaration\Pages\RClientes.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Razor\Pages\RClientes.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\RazorDeclaration\Pages\RReservas.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Razor\Pages\RReservas.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.dll
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.dll
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\bin\Debug\net5.0\MoreLinq.dll

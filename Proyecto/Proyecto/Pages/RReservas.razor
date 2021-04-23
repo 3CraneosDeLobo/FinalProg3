@@ -1,0 +1,392 @@
+﻿@page "/RReservas"
+@attribute [Authorize]
+
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Reservar Vehiculo</h3>
+        </div>
+        <div class="card-body">
+            @if (vofCargar)
+            {
+                <div class="form-group">
+                    Cliente:
+                    <input class="form-control" @bind="ClienteNombre" disabled />
+                    <button class="btn btn-secondary btn-block" @onclick="Cambiar">Seleccionar Cliente</button>
+                </div>
+                <div class="form-group">
+                    Desde:
+                    <input type="date" @bind="fecha1" class="form-control" />
+                </div>
+                <div class="form-group">
+                    Hasta:
+                    <input type="date" @bind="fecha2" class="form-control" />
+                    <button class="btn btn-secondary btn-block" @onclick="Cambiar2">Seleccionar Vehiculos Disponibles en esa fecha</button>
+                </div>
+                <div class="form-group">
+                    Vehiculo:
+                    <input class="form-control" @bind="VehiculoNombre" disabled />
+                </div>
+
+
+               
+            }
+        </div>
+
+    </div>
+
+    @if (vof)
+    {
+
+
+
+<div class="contenedor-modal">
+            
+    <div class="ventana ">
+        @if (vofCliente)
+        {
+
+
+<div class="card text-center overflow-auto">
+
+                <div class="card-header ">
+                    Seleccionar Cliente
+                </div>
+                <div class="card-body ">
+                    <table class="table table-responsive-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Cliente</th>
+                                <th>Seleccionar</th>
+                                
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var x in clientes)
+                    {
+                            <tr>
+                                <td><a href="@x.FotoP" target="_blank"><img src="@x.FotoP" height="100" width="100"/></a></td>
+                            <td>@x.Nombre @x.Apellido</td>
+                                <td><button class="btn btn-primary btn-block" @onclick ="(() => ObtenerCliente(x.ID, x.Nombre, x.Apellido))"> 
+                                    SELECCIONAR
+                                    </button></td>
+                            </tr>
+                    }
+                           
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-dark btn-block" @onclick="Cambiar">Cerrar Ventana</button>
+                </div>
+            </div>
+
+        }
+
+
+    </div>
+        </div>
+
+    }
+
+    @if(vof2)
+            {
+
+
+<div class="contenedor-modal">
+    <div class="ventana">
+        @if (vofVehiculo)
+        {
+            <div class="card text-center overflow-auto">
+
+                <div class="card-header ">
+                    Seleccionar Vehiculo
+                </div>
+                <div class="card-body ">
+                    <table class="table table-responsive-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Vehiculo</th>
+                                <th>Seleccionar</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var x in vehiculos)
+                            {
+                                <tr>
+                                    <td><a href="@x.Foto" target="_blank"><img src="@x.Foto" height="100" width="100" /></a></td>
+                                    <td>@x.Marca - @x.Modelo - @x.Color</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-block" @onclick="(() => ObtenerVehiculo(x.ID, x.Marca, x.Modelo, x.Color))">
+                                            SELECCIONAR
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-dark btn-block" @onclick="Cambiar2">Cerrar Ventana</button>
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+                </div>
+            }
+
+
+
+
+</div>
+@status
+
+   
+            
+
+@code {      // ----------------------------------------------------------- BEGIN -------------------------------------------------------------
+
+    List<Reservas> reservas;
+    List<Clientes> clientes;
+    List<Vehiculos> vehiculos = new List<Vehiculos>();
+    bool vofCargar = true;
+    string modal = "contenedor-modal";
+    bool vof = false;
+    bool vof2 = false;
+
+    bool vofCliente = false;
+    bool vofVehiculo = false;
+
+    string ClienteNombre = "";
+    string ClienteID = "";
+    string VehiculoNombre = "";
+    string VehiculoID = "";
+    string status = "";
+    DateTime fecha1 = Convert.ToDateTime("02/02/2002");
+    DateTime fecha2 = Convert.ToDateTime("02/03/2002");
+
+
+
+
+
+    public async Task Cambiar()
+    {
+        if (vof)
+        {
+            vof = false;
+        }
+        else
+        {
+            vof = true;
+            await VerClientes();
+        }
+    }
+
+    public async Task Cambiar2()
+    {
+        if (vof2)
+        {
+            vof2 = false;
+        }
+        else
+        {
+            vof2 = true;
+            await VerVehiculos();
+        }
+    }
+
+
+    async Task VerClientes()
+    {
+
+        HttpClient http = new HttpClient();
+        string URI = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Clientes.json";
+
+        var response = await http.GetAsync(URI);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+
+            var datos = JsonConvert.DeserializeObject<Dictionary<string, Clientes>>(content).ToList();
+
+            var datos2 = from xd in datos
+                         select new Clientes
+                         {
+                             ID = xd.Key,
+                             Apellido = xd.Value.Apellido,
+                             Cedula = xd.Value.Cedula,
+                             Correo = xd.Value.Correo,
+                             Estado = xd.Value.Estado,
+                             FotoL = xd.Value.FotoL,
+                             FotoP = xd.Value.FotoP,
+                             Licencia = xd.Value.Licencia,
+                             Nacionalidad = xd.Value.Nacionalidad,
+                             Nombre = xd.Value.Nombre,
+                             Sangre = xd.Value.Sangre
+
+
+
+                         };
+
+            clientes = datos2.ToList();
+
+            vofCliente = true;
+        }
+
+
+        // --------------------------------------- END --------------------------------------------------------
+    }
+
+
+    async Task ObtenerCliente(string id, string nombre, string apellido)
+    {
+
+        ClienteNombre = $"{nombre} {apellido}";
+        ClienteID = id;
+
+        await Cambiar();
+
+
+    }
+
+    async Task ObtenerVehiculo(string id, string marca, string modelo, string color)
+    {
+
+        VehiculoNombre = $"{marca} - {modelo} - {color}";
+        VehiculoID = id;
+
+        await Cambiar2();
+
+
+    }
+
+
+
+    async Task VerVehiculos()
+    {
+
+        HttpClient http = new HttpClient();
+
+        string URI = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Reservas.json";
+
+
+        var response = http.GetAsync(URI);
+
+        if (response.Result.IsSuccessStatusCode)
+        {
+            var content = await response.Result.Content.ReadAsStringAsync();
+
+            var data = JsonConvert.DeserializeObject<Dictionary<string, Reservas>>(content).ToList();
+
+            var data2 = from x in data
+                        select new Reservas
+                        {
+                            VehiculoID = x.Value.VehiculoID,
+                            Estado = x.Value.Estado,
+                            Desde = x.Value.Desde,
+                            Hasta = x.Value.Hasta
+                        };
+
+            var data3 = data2.Where(x => (Convert.ToInt32(fecha1.ToString("MMddyyyy")) >= Convert.ToInt32( x.Desde.ToString("MMddyyyy")) &&  Convert.ToInt32(fecha2.ToString("MMddyyyy")) <= Convert.ToInt32(x.Hasta.ToString("MMddyyyy"))) || (fecha1 <= x.Desde && fecha2 >= x.Hasta )).Select(x => (x.VehiculoID, x.Hasta, x.Desde, x.Estado)).ToList();
+
+            var data4 = from x in data3 select new Reservas { Hasta = x.Hasta, Desde = x.Desde, Estado = x.Estado, VehiculoID = x.VehiculoID };
+
+            reservas = data4.ToList();
+
+
+
+
+            var response2 = await http.GetAsync($"https://finalprog3-930fc-default-rtdb.firebaseio.com/Vehiculos.json");
+            if (response2.IsSuccessStatusCode)
+            {
+                var content2 = await response2.Content.ReadAsStringAsync();
+
+                var dato7 = JsonConvert.DeserializeObject<Dictionary<string, Vehiculos>>(content2).ToList();
+
+
+                var dato2 = (from dato in dato7 select new Vehiculos
+                {
+
+                    ID = dato.Key,
+                    Carga = dato.Value.Carga,
+                    Color = dato.Value.Color,
+                    Estado = dato.Value.Estado,
+                    Foto = dato.Value.Foto,
+                    Lat = dato.Value.Lat,
+                    Lng = dato.Value.Lng,
+                    Seguro = dato.Value.Seguro,
+                    Marca = dato.Value.Marca,
+                    Matricula = dato.Value.Matricula,
+                    Modelo = dato.Value.Modelo,
+                    Pasajeros = dato.Value.Pasajeros,
+                    Price = dato.Value.Price,
+                    Tipo = dato.Value.Tipo,
+                    Year = dato.Value.Year
+
+
+
+                }).ToList();
+                vehiculos.Clear();
+                // foreach (var x in reservas)
+                //  {
+                // status += $"- {x.VehiculoID} -";
+                int num = 0;
+                int num2 = 0;
+                bool vofNum = false;
+
+                //
+                // int z = reservas.Count();
+                var dato5 = (from x in reservas
+                             from z in dato2
+
+                             where z.ID != x.VehiculoID
+                             select new
+                             {
+                                 z.ID
+                             }
+
+
+
+                             ) ;
+                //vehiculos = dato5;
+
+                var dato8 = from x in reservas select new Vehiculos { ID = x.VehiculoID };
+
+                vehiculos = dato2.ExceptBy(dato8, c => c.ID).ToList();
+                //
+
+
+
+
+                //  }
+
+
+            }
+
+
+            // vehiculos = lista.ToList();
+            vofVehiculo = true;
+            //await Cambiar2();
+        }
+
+
+
+
+    }
+
+
+
+
+    //------------------------------------ END --------------------------------------------------------
+}

@@ -16,6 +16,7 @@ namespace Proyecto.Pages
         HttpClient http = new HttpClient();
      
        public MultipartFormDataContent data;
+        public MultipartFormDataContent data2;
         public string url = "https://api.imgbb.com/1/upload?expiration=3000000&key=d3892a5dd5edc697fa0f0b9411f78edc";
        
         
@@ -57,6 +58,45 @@ namespace Proyecto.Pages
 
 
         }
+
+        public async Task CargarImagen2(IFileListEntry[] files)
+        {
+
+
+            var file = files.FirstOrDefault();
+            if (file != null)
+            {
+                var ms = new MemoryStream();
+                await file.Data.CopyToAsync(ms);
+                data2 = new MultipartFormDataContent
+                {
+                    {new ByteArrayContent(ms.GetBuffer()), "image", file.Name}
+                };
+
+
+            }
+
+
+
+        }
+
+        public async Task<string> ObtenerURL2()
+        {
+            var response = await http.PostAsync(url, data2);
+            if (response.IsSuccessStatusCode)
+            {
+                var hola = JsonConvert.DeserializeObject<Root>(await response.Content.ReadAsStringAsync());
+                return hola.data.url;
+            }
+            else
+            {
+                return "";
+            }
+
+
+
+        }
+
 
 
 
