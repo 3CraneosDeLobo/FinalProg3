@@ -1,0 +1,245 @@
+﻿@page "/LVehiculos"
+@attribute [Authorize]
+
+
+<div class="container">
+
+    <div class="card">
+        <div class="card-header">
+            <div class="form-group">
+                Desde:
+                <input type="date" @bind="fecha1" @bind:event="OnInput" class="form-control" @onchange="FechaCambio" />
+
+            </div>
+            <div class="form-group">
+                Hasta:
+                <input type="date" @bind="fecha2" @bind:event="OnInput" @onchange="FechaCambio2" class="form-control" />              
+            </div>
+        </div>
+        <div class="card-body table-responsive">
+            @if (vofCarga)
+            {
+                <table class=" table   table-hover overflow-auto mt-5  text-center" style="display:table">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                Foto
+                            </th>
+                            <th scope="col">
+                                Carga
+                            </th>
+                            <th scope="col">
+                                Color
+                            </th>
+                            <th scope="col">
+                                Marca
+                            </th>
+                            <th scope="col">
+                                Matricula
+                            </th>
+                            <th scope="col">
+                                Modelo
+                            </th>
+                            <th scope="col">
+                                Pasajeros
+                            </th>
+                            <th scope="col">
+                                Precio por dia
+                            </th>
+                            <th scope="col">
+                                Numero de Seguro
+                            </th>
+                            <th scope="col">
+                                Tipo de Vehiculo
+                            </th>
+                            <th scope="col">
+                                Año
+                            </th>
+                            
+                            
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var x in vehiculos)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@x.Foto" target="_blank"> <img src="@x.Foto" width="100" height="100" /></a>
+                                </td>
+                                <td>
+                                    @x.Carga Kg
+                                </td>
+                                <td>
+                                    @x.Color
+                                </td>
+                                <td>
+                                    @x.Marca
+                                </td>
+                                <td>
+                                    @x.Matricula
+                                </td>
+                                <td>
+                                    @x.Modelo
+                                </td>
+                                <td>
+                                    @x.Pasajeros
+                                </td>
+                                <td>
+                                    @x.Price Pesos
+                                </td>
+                                <td>
+                                    @x.Seguro
+                                </td>
+                                <td>
+                                    @x.Tipo
+                                </td>
+                                <td>
+                                    @x.Year
+                                </td>
+                                
+                               
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+
+
+            }
+        </div>
+    </div>
+
+</div>
+
+
+
+
+@code {
+
+    bool vofCarga = false;
+
+    List<Vehiculos> vehiculos;
+    List<Reservas> reservas;
+    DateTime fecha1 = DateTime.Now;
+    DateTime fecha2 = DateTime.Now.AddDays(1);
+
+    async Task FechaCambio(ChangeEventArgs e)
+    {
+        fecha1 = Convert.ToDateTime(e.Value);
+
+
+        await OnInitializedAsync();
+    }
+    async Task FechaCambio2(ChangeEventArgs e)
+    {
+        fecha2 = Convert.ToDateTime(e.Value);
+
+        await OnInitializedAsync();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        HttpClient http = new HttpClient();
+
+        string URI = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Reservas.json";
+
+
+        var response = http.GetAsync(URI);
+
+        if (response.Result.IsSuccessStatusCode)
+        {
+            var content = await response.Result.Content.ReadAsStringAsync();
+
+            var data = JsonConvert.DeserializeObject<Dictionary<string, Reservas>>(content).ToList();
+
+            var data2 = from x in data
+                        select new Reservas
+                        {
+                            VehiculoID = x.Value.VehiculoID,
+                            Estado = x.Value.Estado,
+                            Desde = x.Value.Desde,
+                            Hasta = x.Value.Hasta
+                        };
+
+            var data3 = data2.Where(x =>
+            (fecha1
+            >= x.Desde
+            && fecha2
+            <= x.Hasta)
+            ||
+            (fecha1 <= x.Desde
+            && fecha2 >= x.Hasta
+            )
+            ).Select(x => (x.VehiculoID, x.Hasta, x.Desde, x.Estado));
+
+            var data4 = from x in data3 select new Reservas { Hasta = x.Hasta, Desde = x.Desde, Estado = x.Estado, VehiculoID = x.VehiculoID };
+
+            reservas = data4.ToList();
+
+
+
+
+            var response2 = await http.GetAsync($"https://finalprog3-930fc-default-rtdb.firebaseio.com/Vehiculos.json");
+            if (response2.IsSuccessStatusCode)
+            {
+                var content2 = await response2.Content.ReadAsStringAsync();
+
+                var dato7 = JsonConvert.DeserializeObject<Dictionary<string, Vehiculos>>(content2).ToList();
+
+
+                var dato2 = (from dato in dato7
+                             select new Vehiculos
+                             {
+
+                                 ID = dato.Key,
+                                 Carga = dato.Value.Carga,
+                                 Color = dato.Value.Color,
+                                 Estado = dato.Value.Estado,
+                                 Foto = dato.Value.Foto,
+                                 Lat = dato.Value.Lat,
+                                 Lng = dato.Value.Lng,
+                                 Seguro = dato.Value.Seguro,
+                                 Marca = dato.Value.Marca,
+                                 Matricula = dato.Value.Matricula,
+                                 Modelo = dato.Value.Modelo,
+                                 Pasajeros = dato.Value.Pasajeros,
+                                 Price = dato.Value.Price,
+                                 Tipo = dato.Value.Tipo,
+                                 Year = dato.Value.Year
+
+
+
+                             }).ToList();
+
+
+
+                var dato8 = from x in reservas select new Vehiculos { ID = x.VehiculoID };
+
+                vehiculos = dato2.ExceptBy(dato8, c => c.ID).Where(x => x.Estado == "YES").ToList();
+                //
+
+
+
+
+                //  }
+
+
+            }
+
+
+            // vehiculos = lista.ToList();
+
+            //await Cambiar2();
+        }
+
+
+
+        vofCarga = true;
+    }
+
+
+
+}

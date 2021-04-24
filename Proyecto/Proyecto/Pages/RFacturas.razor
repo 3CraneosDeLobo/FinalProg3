@@ -1,0 +1,294 @@
+﻿@page "/RFacturas"
+@attribute [Authorize]
+
+
+<div class="container">
+    <div class="row">
+        @if (vofCarga)
+        {
+
+            @foreach (var x in facturas)
+            {
+
+                Clientes Cli = clientes.First(z => z.ID == x.ClienteID);
+                Vehiculos Vehi = vehiculos.First(y => y.ID == x.VehiculoID);
+
+
+                <div class="card mt-3 ml-3 mr-3" style="width: 20rem">
+                    <div class="card-header">
+                        <h2>
+                            @if (x.Pagada == "YES")
+                            {
+
+
+                                <b>PAGADO</b>
+                            }
+                            else
+                            {
+                                <b>SIN PAGAR</b>
+                            }
+                    </h2>
+                   
+                </div>
+                <div class="card-body">
+
+                    <p>Cliente: @Cli.Nombre @Cli.Apellido</p>
+                    <p>Cedula: @Cli.Cedula</p>
+                    <p>Vehiculo: @Vehi.Marca - @Vehi.Modelo - @Vehi.Color - @Vehi.Year</p>
+                    <p>Matricula: @Vehi.Matricula</p>
+                    <p>Desde: @x.Desde</p>
+                    <p>Hasta: @x.Hasta</p>
+                    <p>Monto: @x.Monto</p>
+                    <p>Deuda: @x.Debe</p>
+                    <p>Pagado: @x.Pagado</p>
+
+                </div>
+                <div class="card-footer">
+                    @if (x.Pagada == "NO")
+                    {
+                        <button class="btn btn-success btn-block" @onclick="(() => Pagar(x.ID, x.Debe))">
+                            Pagar
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-dark btn-block" disabled>
+                            Pagar
+                        </button>
+                    }
+
+                </div>
+
+
+            </div>
+
+        }
+
+
+        }
+    </div>
+    @if(vofPago) {
+    <div class="contenedor-modal">
+        <div class="ventana">
+            <div class="card">
+<div class="card-header">
+    <button class="btn btn-danger btn-block" @onclick="Cerrar">CERRAR</button>
+</div>
+                <div class="card-body">
+                    <input class="form-control" @bind="pago" type="number" min="0" max="@pag"  />
+                </div>
+                <div class="card-footer">
+                    <div class="btn btn-primary btn-block" @onclick="Pagando" >PAGAR</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    }
+
+</div>
+    
+
+    @code {
+
+        bool vofCarga = false;
+        bool vofPago = false;
+
+        List<Vehiculos> vehiculos;
+        List<Clientes> clientes;
+        List<Factura> facturas;
+
+        double pago = 0;
+
+        string ID = "";
+        double pag = 0;
+        protected override async Task OnInitializedAsync()
+        {
+
+            string urlV = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Vehiculos.json";
+            string urlF = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Facturas.json";
+            string urlC = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Clientes.json";
+
+            HttpClient http = new HttpClient();
+
+            var resV = await http.GetAsync(urlV);
+            if (resV.IsSuccessStatusCode)
+            {
+                var content = await resV.Content.ReadAsStringAsync();
+
+                var dVehiculos = JsonConvert.DeserializeObject<Dictionary<string, Vehiculos>>(content);
+
+                var dVehiculos2 = from x in dVehiculos
+                                  select new Vehiculos
+                                  {
+                                      ID = x.Key,
+                                      Carga = x.Value.Carga,
+                                      Color = x.Value.Color,
+                                      Estado = x.Value.Estado,
+                                      Foto = x.Value.Foto,
+                                      Lat = x.Value.Lat,
+                                      Lng = x.Value.Lng,
+                                      Marca = x.Value.Marca,
+                                      Matricula = x.Value.Matricula,
+                                      Modelo = x.Value.Modelo,
+                                      Pasajeros = x.Value.Pasajeros,
+                                      Price = x.Value.Price,
+                                      Seguro = x.Value.Seguro,
+                                      Tipo = x.Value.Tipo,
+                                      Year = x.Value.Year
+
+
+
+                                  };
+
+                vehiculos = dVehiculos2.ToList();
+                //------------------------
+                var resC = await http.GetAsync(urlC);
+                if (resC.IsSuccessStatusCode)
+                {
+                    var content2 = await resC.Content.ReadAsStringAsync();
+
+                    var dClientes = JsonConvert.DeserializeObject<Dictionary<string, Clientes>>(content2);
+
+                    var dClientes2 = from x in dClientes
+                                     select new Clientes
+                                     {
+
+                                         ID = x.Key,
+                                         Apellido = x.Value.Apellido,
+                                         Cedula = x.Value.Cedula,
+                                         Correo = x.Value.Correo,
+                                         Estado = x.Value.Estado,
+                                         FotoL = x.Value.FotoL,
+                                         FotoP = x.Value.FotoP,
+                                         Licencia = x.Value.Licencia,
+                                         Nacionalidad = x.Value.Nacionalidad,
+                                         Nombre = x.Value.Nombre,
+                                         Sangre = x.Value.Sangre
+
+
+
+
+                                     };
+
+                    clientes = dClientes2.ToList();
+
+                    var resF = await http.GetAsync(urlF);
+
+                    if(resF.IsSuccessStatusCode)
+                    {
+                        var content3 = await resF.Content.ReadAsStringAsync();
+
+                        var dFacturas = JsonConvert.DeserializeObject<Dictionary<string, Factura>>(content3);
+
+                        var dFacturas2 = from x in dFacturas
+                                         select new Factura
+                                         {
+                                             ID = x.Key,
+                                             ClienteID = x.Value.ClienteID,
+                                             Debe = x.Value.Debe,
+                                             Desde = x.Value.Desde,
+                                             Estado = x.Value.Estado,
+                                             Monto = x.Value.Monto,
+                                             Pagada = x.Value.Pagada,
+                                             Pagado = x.Value.Pagado,
+                                             VehiculoID = x.Value.VehiculoID,
+                                             Hasta = x.Value.Hasta
+
+
+
+                                         };
+
+                        facturas = dFacturas2.Reverse().ToList();
+
+                    }
+
+
+                }
+
+
+
+            }
+
+
+            vofCarga = true;
+        }
+
+        void Pagar(string id, string debe)
+        {
+            vofPago = true;
+
+            pag = Convert.ToDouble(debe);
+            pago = pag;
+            ID = id;
+
+
+        }
+
+        void Cerrar()
+        {
+            vofPago = false;
+        }
+
+        async Task Pagando()
+        {
+            HttpClient http = new HttpClient();
+
+            string URI = $"https://finalprog3-930fc-default-rtdb.firebaseio.com/Facturas/{ID}.json";
+            double num = pag - pago;
+            if(num == 0)
+            {
+                var data = new { Pagada = "YES", Debe = num.ToString(), Pagado = pago.ToString() };
+
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+
+                var data2 = new StringContent(json);
+
+
+                var response = await http.PatchAsync(URI, data2);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    vofCarga = false;
+                    await OnInitializedAsync();
+
+                    pago = 0;
+                    ID = "";
+                    pag = 0;
+                    vofPago = false;
+
+                }
+
+            }
+            else
+            {
+                var data = new { Debe = num.ToString(), Pagado = pago.ToString()};
+
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+
+                var data2 = new StringContent(json);
+
+
+                var response = await http.PatchAsync(URI, data2);
+
+                if(response.IsSuccessStatusCode)
+                {
+                    vofCarga = false;
+                    await OnInitializedAsync();
+
+                    pago = 0;
+                    ID = "";
+                    pag = 0;
+                    vofPago = false;
+
+                }
+
+
+
+            }
+
+
+
+        }
+
+    }

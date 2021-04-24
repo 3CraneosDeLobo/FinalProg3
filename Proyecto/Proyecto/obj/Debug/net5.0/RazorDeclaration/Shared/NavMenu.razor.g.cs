@@ -132,7 +132,7 @@ using MoreLinq.Extensions;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 37 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Shared\NavMenu.razor"
+#line 57 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
 

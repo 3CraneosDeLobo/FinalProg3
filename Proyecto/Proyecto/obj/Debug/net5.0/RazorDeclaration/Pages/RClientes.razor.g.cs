@@ -140,7 +140,7 @@ using MoreLinq.Extensions;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 192 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RClientes.razor"
+#line 196 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RClientes.razor"
        
 
     /// ------------------------------- BEGIN ---------------------------------------

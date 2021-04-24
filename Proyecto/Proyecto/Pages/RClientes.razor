@@ -65,52 +65,52 @@
     @if (vofTabla)
     {
 
+<div class="table-responsive">
+    <table class="table table-hover mt-5 text-center">
+        <thead>
+            <tr>
+                <th scope="col">
+                    Foto de Licencia:
+                </th>
+                <th scope="col">
+                    Foto del Cliente:
+                </th>
+                <th scope="col">
+                    Nombre:
+                </th>
+                <th scope="col">
+                    Apellido:
+                </th>
+                <th scope="col">
+                    Cedula:
+                </th>
+                <th scope="col">
+                    Correo:
+                </th>
+                <th scope="col">
+                    Licencia:
+                </th>
+                <th scope="col">
+                    Nacionalidad:
+                </th>
+                <th scope="col">
+                    Tipo de Sangre:
+                </th>
+                <th scope="col">
+                    Estado:
+                </th>
+                <th scope="col">
+                    Editar:
+                </th>
+                <th scope="col">
+                    Habilitar/Deshabilitar:
 
-<table class="table table-responsive-sm table-hover mt-5 text-center">
-            <thead>
-                <tr>
-                    <th scope="col">
-                        Foto de Licencia:
-                    </th>
-                    <th scope="col">
-                        Foto del Cliente:
-                    </th>
-                    <th scope="col">
-                        Nombre:
-                    </th>
-                    <th scope="col">
-                        Apellido:
-                    </th>
-                    <th scope="col">
-                        Cedula:
-                    </th>
-                    <th scope="col">
-                        Correo:
-                    </th>
-                    <th scope="col">
-                        Licencia:
-                    </th>
-                    <th scope="col"> 
-                        Nacionalidad:
-                    </th>
-                    <th scope="col">
-                        Tipo de Sangre:
-                    </th>
-                    <th scope="col">
-                        Estado:
-                    </th>
-                    <th scope="col">
-                        Editar:
-                    </th>
-                    <th scope="col">
-                        Habilitar/Deshabilitar:
-
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var x in clientes)
-                {
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in clientes)
+            {
                 <tr>
                     <td>
                         <a href="@x.FotoL" target="_blank"><img src="@x.FotoL" height="100" width="100" /></a>
@@ -140,21 +140,21 @@
                         @x.Sangre
                     </td>
                     <td>
-                        @if(x.Estado == "YES")
-                    {
+                        @if (x.Estado == "YES")
+                        {
 
 
-<h4>HABILITADO</h4>
-                    }
-                    else
-                    {
-                        <h4>DESHABILITADO</h4>
-                    }
+                            <h4>HABILITADO</h4>
+                        }
+                        else
+                        {
+                            <h4>DESHABILITADO</h4>
+                        }
 
                     </td>
                     <td>
-                        <button class="btn btn-info btn-block" 
-                        @onclick="(()=> Edit(x.ID,
+                        <button class="btn btn-info btn-block"
+                                @onclick="(()=> Edit(x.ID,
                                   x.Apellido,
                                   x.Cedula,
                                   x.Correo,
@@ -164,7 +164,9 @@
                                   x.Nacionalidad,
                                   x.Nombre,
                                   x.Sangre
-                                  ))">EDITAR</button>
+                                  ))">
+                            EDITAR
+                        </button>
                     </td>
                     <td>
                         @if (x.Estado == "YES")
@@ -173,14 +175,16 @@
                         }
                         else
                         {
-                            <button class="btn btn-danger btn-block" @onclick="(() => ChangeStatus(x.ID, YES))" >HABILITAR</button>
+                            <button class="btn btn-danger btn-block" @onclick="(() => ChangeStatus(x.ID, YES))">HABILITAR</button>
                         }
                     </td>
                 </tr>
-                }
+            }
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
+</div>
+
     }
 
 

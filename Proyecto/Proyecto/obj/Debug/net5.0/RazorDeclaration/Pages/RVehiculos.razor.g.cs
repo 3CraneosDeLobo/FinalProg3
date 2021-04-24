@@ -140,7 +140,7 @@ using MoreLinq.Extensions;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 254 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RVehiculos.razor"
+#line 255 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RVehiculos.razor"
        
     /////////////////
     Funciones fc = new Funciones();

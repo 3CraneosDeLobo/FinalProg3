@@ -71,3 +71,11 @@ D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\bin\D
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\bin\Debug\net5.0\Microsoft.Extensions.DependencyInjection.dll
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\bin\Debug\net5.0\MoreLinq.dll
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\RazorDeclaration\Pages\RFacturas.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Razor\Pages\RFacturas.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\RazorDeclaration\Pages\ListaVehiculos.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Razor\Pages\ListaVehiculos.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\RazorDeclaration\Pages\ListaBeneficios.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Razor\Pages\ListaBeneficios.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\RazorDeclaration\Pages\LDeudas.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Razor\Pages\LDeudas.razor.g.cs

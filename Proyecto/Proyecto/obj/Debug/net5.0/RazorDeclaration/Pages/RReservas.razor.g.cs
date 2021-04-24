@@ -140,7 +140,7 @@ using MoreLinq.Extensions;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 157 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RReservas.razor"
+#line 164 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RReservas.razor"
              // ----------------------------------------------------------- BEGIN -------------------------------------------------------------
 
     List<Reservas> reservas;
@@ -153,17 +153,33 @@ using MoreLinq.Extensions;
 
     bool vofCliente = false;
     bool vofVehiculo = false;
+    bool vofReserva = false;
 
     string ClienteNombre = "";
     string ClienteID = "";
     string VehiculoNombre = "";
     string VehiculoID = "";
     string status = "";
-    DateTime fecha1 = Convert.ToDateTime("02/02/2002");
-    DateTime fecha2 = Convert.ToDateTime("02/03/2002");
+    string precio = "";
+    DateTime fecha1 = DateTime.Now;
+    DateTime fecha2 = DateTime.Now.AddDays(1);
 
 
 
+    void FechaCambio(ChangeEventArgs e )
+    {
+        fecha1 = Convert.ToDateTime(e.Value);
+        VehiculoNombre = "";
+        VehiculoID = "";
+        precio = "";
+    }
+    void FechaCambio2(ChangeEventArgs e)
+    {
+        fecha2 = Convert.ToDateTime(e.Value);
+        VehiculoNombre = "";
+        VehiculoID = "";
+        precio = "";
+    }
 
 
     public async Task Cambiar()
@@ -232,7 +248,7 @@ using MoreLinq.Extensions;
         }
 
 
-        // --------------------------------------- END --------------------------------------------------------
+
     }
 
 
@@ -247,11 +263,12 @@ using MoreLinq.Extensions;
 
     }
 
-    async Task ObtenerVehiculo(string id, string marca, string modelo, string color)
+    async Task ObtenerVehiculo(string id, string marca, string modelo, string color, string price)
     {
 
         VehiculoNombre = $"{marca} - {modelo} - {color}";
         VehiculoID = id;
+        precio = price;
 
         await Cambiar2();
 
@@ -285,7 +302,16 @@ using MoreLinq.Extensions;
                             Hasta = x.Value.Hasta
                         };
 
-            var data3 = data2.Where(x => (Convert.ToInt32(fecha1.ToString("MMddyyyy")) >= Convert.ToInt32( x.Desde.ToString("MMddyyyy")) &&  Convert.ToInt32(fecha2.ToString("MMddyyyy")) <= Convert.ToInt32(x.Hasta.ToString("MMddyyyy"))) || (fecha1 <= x.Desde && fecha2 >= x.Hasta )).Select(x => (x.VehiculoID, x.Hasta, x.Desde, x.Estado)).ToList();
+            var data3 = data2.Where(x =>
+            (fecha1
+            >=  x.Desde
+            &&  fecha2
+            <= x.Hasta)
+            ||
+            (fecha1 <= x.Desde
+            && fecha2 >= x.Hasta
+            )
+            ).Select(x => (x.VehiculoID, x.Hasta, x.Desde, x.Estado));
 
             var data4 = from x in data3 select new Reservas { Hasta = x.Hasta, Desde = x.Desde, Estado = x.Estado, VehiculoID = x.VehiculoID };
 
@@ -324,33 +350,12 @@ using MoreLinq.Extensions;
 
 
                 }).ToList();
-                vehiculos.Clear();
-                // foreach (var x in reservas)
-                //  {
-                // status += $"- {x.VehiculoID} -";
-                int num = 0;
-                int num2 = 0;
-                bool vofNum = false;
-
-                //
-                // int z = reservas.Count();
-                var dato5 = (from x in reservas
-                             from z in dato2
-
-                             where z.ID != x.VehiculoID
-                             select new
-                             {
-                                 z.ID
-                             }
 
 
-
-                             ) ;
-                //vehiculos = dato5;
 
                 var dato8 = from x in reservas select new Vehiculos { ID = x.VehiculoID };
 
-                vehiculos = dato2.ExceptBy(dato8, c => c.ID).ToList();
+                vehiculos = dato2.ExceptBy(dato8, c => c.ID).Where(x => x.Estado == "YES").ToList();
                 //
 
 
@@ -372,6 +377,64 @@ using MoreLinq.Extensions;
 
     }
 
+    async Task Reservar()
+    {
+
+        await CrearFactura();
+
+    }
+
+    async Task CrearFactura()
+    {
+        HttpClient http = new HttpClient();
+        string URI = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Facturas.json";
+
+        TimeSpan dias = fecha2 - fecha1;
+
+        int dias2 = dias.Days;
+
+        double preciototal = dias2 * Convert.ToDouble(precio);
+
+        var factura = new Factura { ClienteID = ClienteID, VehiculoID = VehiculoID, Pagada = "NO", Estado = "YES", Desde = fecha1.ToString(), Hasta = fecha2.ToString(), Monto = preciototal.ToString(), Debe = preciototal.ToString(), Pagado = "0" };
+
+
+        var json = JsonConvert.SerializeObject(factura, Formatting.Indented);
+
+        var factura2 = new StringContent(json);
+
+
+        var res = await http.PostAsync(URI, factura2);
+
+        if(res.IsSuccessStatusCode)
+        {
+            await ReservarVehiculo();
+            ClienteNombre = "";
+            ClienteID = "";
+            VehiculoNombre = "";
+            VehiculoID = "";
+            status = "";
+            precio = "";
+            vofReserva = true;
+        }
+
+
+
+
+    }
+    async Task ReservarVehiculo()
+    {
+        HttpClient http = new HttpClient();
+        string URI = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Reservas.json";
+
+        var reserva = new Reservas { Desde = fecha1, Hasta = fecha2, Estado = "YES", VehiculoID = VehiculoID };
+
+        var json = JsonConvert.SerializeObject(reserva, Formatting.Indented);
+
+        var reserva2 = new StringContent(json);
+
+        await http.PostAsync(URI, reserva2);
+
+    }
 
 
 
