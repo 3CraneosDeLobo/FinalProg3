@@ -61,15 +61,15 @@
                 Numero de Seguro:
                 <input class="form-control" @bind="Seguro" />
             </div>
-            <div class="form-group" >
+            <div class="form-group">
                 Foto:
                 @if (vofEdit)
-            {
-                <div >
-                    Foto Anterior:
-                    <img src="@imgURL" width="100" height="100" />
-                </div>
-            }
+                {
+                    <div>
+                        Foto Anterior:
+                        <img src="@imgURL" width="100" height="100" />
+                    </div>
+                }
                 <BlazorInputFile.InputFile class="form-control-file" accept="image/*" OnChange="Cambio" />
                 <h3>@mensajeFoto</h3>
             </div>
@@ -96,105 +96,105 @@
     @if (vofTabla)
     {
 
-<div class="table-responsive">
-    <table class="table  table-hover mt-5 text-center">
-        <thead>
-            <tr>
-                <th scope="col">
-                    Foto
-                </th>
-                <th scope="col">
-                    Carga
-                </th>
-                <th scope="col">
-                    Color
-                </th>
-                <th scope="col">
-                    Marca
-                </th>
-                <th scope="col">
-                    Matricula
-                </th>
-                <th scope="col">
-                    Modelo
-                </th>
-                <th scope="col">
-                    Pasajeros
-                </th>
-                <th scope="col">
-                    Precio por dia
-                </th>
-                <th scope="col">
-                    Numero de Seguro
-                </th>
-                <th scope="col">
-                    Tipo de Vehiculo
-                </th>
-                <th scope="col">
-                    Año
-                </th>
-                <th scope="col">
-                    Estado
-                </th>
-                <th scope="col">
-                    Editar
-                </th>
-                <th scope="col">
-                    Cambiar Estado
-                </th>
+        <div class="table-responsive">
+            <table class="table  table-hover mt-5 text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            Foto
+                        </th>
+                        <th scope="col">
+                            Carga
+                        </th>
+                        <th scope="col">
+                            Color
+                        </th>
+                        <th scope="col">
+                            Marca
+                        </th>
+                        <th scope="col">
+                            Matricula
+                        </th>
+                        <th scope="col">
+                            Modelo
+                        </th>
+                        <th scope="col">
+                            Pasajeros
+                        </th>
+                        <th scope="col">
+                            Precio por dia
+                        </th>
+                        <th scope="col">
+                            Numero de Seguro
+                        </th>
+                        <th scope="col">
+                            Tipo de Vehiculo
+                        </th>
+                        <th scope="col">
+                            Año
+                        </th>
+                        <th scope="col">
+                            Estado
+                        </th>
+                        <th scope="col">
+                            Editar
+                        </th>
+                        <th scope="col">
+                            Cambiar Estado
+                        </th>
 
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var x in vehiculos)
-            {
-                <tr>
-                    <td>
-                        <a href="@x.Foto" target="_blank"> <img src="@x.Foto" width="100" height="100" /></a>
-                    </td>
-                    <td>
-                        @x.Carga Kg
-                    </td>
-                    <td>
-                        @x.Color
-                    </td>
-                    <td>
-                        @x.Marca
-                    </td>
-                    <td>
-                        @x.Matricula
-                    </td>
-                    <td>
-                        @x.Modelo
-                    </td>
-                    <td>
-                        @x.Pasajeros
-                    </td>
-                    <td>
-                        @x.Price Pesos
-                    </td>
-                    <td>
-                        @x.Seguro
-                    </td>
-                    <td>
-                        @x.Tipo
-                    </td>
-                    <td>
-                        @x.Year
-                    </td>
-                    <td>
-                        @if (x.Estado == "YES")
-                        {
-                            <h4>Activado</h4>
-                        }
-                        else
-                        {
-                            <h4>Desactivado</h4>
-                        }
-                    </td>
-                    <td>
-                        <button class="btn btn-success btn-block"
-                                @onclick="(() => Edit(x.ID,
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in vehiculos)
+                    {
+                        <tr>
+                            <td>
+                                <a href="@x.Foto" target="_blank"> <img src="@x.Foto" width="100" height="100" /></a>
+                            </td>
+                            <td>
+                                @x.Carga Kg
+                            </td>
+                            <td>
+                                @x.Color
+                            </td>
+                            <td>
+                                @x.Marca
+                            </td>
+                            <td>
+                                @x.Matricula
+                            </td>
+                            <td>
+                                @x.Modelo
+                            </td>
+                            <td>
+                                @x.Pasajeros
+                            </td>
+                            <td>
+                                @x.Price Pesos
+                            </td>
+                            <td>
+                                @x.Seguro
+                            </td>
+                            <td>
+                                @x.Tipo
+                            </td>
+                            <td>
+                                @x.Year
+                            </td>
+                            <td>
+                                @if (x.Estado == "YES")
+                                {
+                                    <h4>Activado</h4>
+                                }
+                                else
+                                {
+                                    <h4>Desactivado</h4>
+                                }
+                            </td>
+                            <td>
+                                <button class="btn btn-success btn-block"
+                                        @onclick="(() => Edit(x.ID,
                                        x.Carga,
                                        x.Color,
                                        x.Foto,
@@ -209,30 +209,30 @@
                                        x.Tipo,
                                        x.Year
                                        ))">
-                            Editar
-                        </button>
-                    </td>
-                    <td>
+                                    Editar
+                                </button>
+                            </td>
+                            <td>
 
-                        @if (x.Estado == "YES")
-                        {
-                            <button class="btn btn-danger btn-block" @onclick="(() => ChangeStatus(x.ID, NO))">Desactivar</button>
+                                @if (x.Estado == "YES")
+                                {
+                                    <button class="btn btn-danger btn-block" @onclick="(() => ChangeStatus(x.ID, NO))">Desactivar</button>
 
-                        }
-                        else
-                        {
-                            <button class="btn btn-danger btn-block" @onclick="(() => ChangeStatus(x.ID, YES))">Activar</button>
-                        }
+                                }
+                                else
+                                {
+                                    <button class="btn btn-danger btn-block" @onclick="(() => ChangeStatus(x.ID, YES))">Activar</button>
+                                }
 
-                    </td>
-                </tr>
-            }
+                            </td>
+                        </tr>
+                    }
 
-        </tbody>
-    </table>
+                </tbody>
+            </table>
 
-</div>
-               
+        </div>
+
 
     }
     <div class="contenedor-modal-none" id="contenedor">
@@ -247,9 +247,11 @@
             </table>
         </div>
     </div>
-    <div class="mt-5"></div>
+    <div class="mt-5">x</div>
+    <div class="mt-5">x</div>
+
 </div>
-<h1>@mensajeFoto</h1>
+
 
 
 @code {
@@ -270,10 +272,10 @@
     public string Modelo = "";
     public int Year = 2020;
     public string Color = "";
-    public string Precio = "";
+    public string Precio = "0";
     public string Tipo = "Carro";
-    public string Carga = "";
-    public string Pasajeros = "";
+    public string Carga = "0";
+    public string Pasajeros = "0";
     public string Matricula = "";
     public string Seguro = "";
 
@@ -285,12 +287,19 @@
     string imgURL = "";
     int cambio = 0;
 
+  
+   
+
+
+
+
     /// METODOS
 
 
     ///IMAGEN
     public async Task Cambio(IFileListEntry[] files)
     {
+        cambio = 0;
         await fc.CargarImagen(files);
 
         mensajeFoto = "Imagen Seleccionada: " + files.FirstOrDefault().Name;

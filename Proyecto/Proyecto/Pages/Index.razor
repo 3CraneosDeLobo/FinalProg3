@@ -18,7 +18,7 @@
                     Nombre:
                     <input class="form-control" @bind="name" />
                     Username:
-                    <input class="form-control" @bind="user" />
+                    <input class="form-control" @bind="user"  />
                     @if (vof)
                     {
                         <h4 class="alert alert-danger">
@@ -26,7 +26,7 @@
                         </h4>
                     }
                     Password:
-                    <input class="form-control" @bind="pwd" />
+                    <input class="form-control" @bind="pwd" type="password" />
                     <br />
                     <button class="btn btn-info btn-block" @onclick="(() => Registrar())">Registrar</button>
                 </div>
@@ -47,7 +47,7 @@
                         UserName:
                         <input class="form-control" type="text" name="name" />
                         Password:
-                        <input class="form-control" type="text" name="pass" />
+                        <input class="form-control" type="password" name="pass"  />
                         <input type="submit" class="btn btn-info btn-block" value="Iniciar Sesion"/>
                     </form>
 

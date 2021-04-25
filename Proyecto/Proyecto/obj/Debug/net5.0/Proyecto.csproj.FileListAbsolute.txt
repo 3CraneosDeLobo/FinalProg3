@@ -81,3 +81,5 @@ D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\D
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Razor\Pages\LDeudas.razor.g.cs
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\RazorDeclaration\Pages\Mapa.razor.g.cs
 D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Razor\Pages\Mapa.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\RazorDeclaration\Pages\About.razor.g.cs
+D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\obj\Debug\net5.0\Razor\Pages\About.razor.g.cs

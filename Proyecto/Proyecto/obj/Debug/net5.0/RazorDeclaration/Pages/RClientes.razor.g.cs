@@ -193,7 +193,7 @@ using MoreLinq.Extensions;
     async Task Obtener()
     {
 
-        urlFotoPersona = await fc.ObtenerURL();
+        urlFotoPersona = await fc.ObtenerURL2();
 
     }
     async Task Cambio2(IFileListEntry[] files)
@@ -206,7 +206,7 @@ using MoreLinq.Extensions;
     async Task Obtener2()
     {
 
-        urlFotoLicencia = await fc.ObtenerURL2();
+        urlFotoLicencia = await fc.ObtenerURL();
 
     }
     //------------------- METODOS RELACIONADOS A LA API -----------------

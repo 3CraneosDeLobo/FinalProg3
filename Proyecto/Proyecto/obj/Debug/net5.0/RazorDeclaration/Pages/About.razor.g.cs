@@ -124,6 +124,7 @@ using MoreLinq.Extensions;
 #line default
 #line hidden
 #nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/about")]
     public partial class About : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998

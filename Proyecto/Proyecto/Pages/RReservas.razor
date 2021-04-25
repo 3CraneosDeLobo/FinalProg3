@@ -9,160 +9,162 @@
             <h3>Reservar Vehiculo</h3>
         </div>
         <div class="card-body">
-           
-                <div class="form-group">
-                    Cliente:
-                    <input class="form-control" @bind="ClienteNombre" disabled />
-                    <button class="btn btn-secondary btn-block" @onclick="Cambiar">Seleccionar Cliente</button>
-                </div>
-                <div class="form-group">
-                    Desde:
-                    <input type="date" @bind="fecha1" @bind:event="OnInput"  class="form-control"  @onchange="FechaCambio"/>
-                   
-                </div>
-                <div class="form-group">
-                    Hasta:
-                    <input type="date" @bind="fecha2" @bind:event="OnInput" @onchange="FechaCambio2"  class="form-control"/>
-                    <button class="btn btn-secondary btn-block" @onclick="Cambiar2">Seleccionar Vehiculos Disponibles en esa fecha</button>
-                </div>
-                <div class="form-group">
-                    Vehiculo:
-                    <input class="form-control" @bind="VehiculoNombre" disabled />
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-success btn-block" @onclick="Reservar">Reservar Vehiculo</button>
-                </div>
+
+            <div class="form-group">
+                Cliente:
+                <input class="form-control" @bind="ClienteNombre" disabled />
+                <button class="btn btn-secondary btn-block" @onclick="Cambiar">Seleccionar Cliente</button>
+            </div>
+            <div class="form-group">
+                Desde:
+                <input type="date" @bind="fecha1" @bind:event="OnInput" class="form-control" @onchange="FechaCambio" />
+
+            </div>
+            <div class="form-group">
+                Hasta:
+                <input type="date" @bind="fecha2" @bind:event="OnInput" @onchange="FechaCambio2" class="form-control" />
+                <button class="btn btn-secondary btn-block" @onclick="Cambiar2">Seleccionar Vehiculos Disponibles en esa fecha</button>
+            </div>
+            <div class="form-group">
+                Vehiculo:
+                <input class="form-control" @bind="VehiculoNombre" disabled />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success btn-block" @onclick="Reservar">Reservar Vehiculo</button>
+            </div>
 
 
-               
-            
+
+
         </div>
 
     </div>
-    @if(vofReserva)
-            {
-                <h1 class="alert alert-success">Reserva realizada correctamente</h1>
-            }
+    @if (vofReserva)
+    {
+        <h1 class="alert alert-success">Reserva realizada correctamente</h1>
+    }
 
     @if (vof)
     {
 
 
 
-<div class="contenedor-modal">
-            
-    <div class="ventana ">
-        @if (vofCliente)
-        {
+        <div class="contenedor-modal">
+
+            <div class="ventana ">
+                @if (vofCliente)
+                {
 
 
-<div class="card text-center overflow-auto">
+                    <div class="card text-center overflow-auto">
 
-                <div class="card-header ">
-                    Seleccionar Cliente
-                </div>
-                <div class="card-body ">
-                    <table class="table table-responsive-sm table-hover">
-                        <thead>
-                            <tr>
-                                <th>Foto</th>
-                                <th>Cliente</th>
-                                <th>Seleccionar</th>
-                                
+                        <div class="card-header ">
+                            Seleccionar Cliente
+                        </div>
+                        <div class="card-body ">
+                            <table class="table table-responsive-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Foto</th>
+                                        <th>Cliente</th>
+                                        <th>Seleccionar</th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var x in clientes)
-                    {
-                            <tr>
-                                <td><a href="@x.FotoP" target="_blank"><img src="@x.FotoP" height="100" width="100"/></a></td>
-                            <td>@x.Nombre @x.Apellido</td>
-                                <td><button class="btn btn-primary btn-block" @onclick ="(() => ObtenerCliente(x.ID, x.Nombre, x.Apellido))"> 
-                                    SELECCIONAR
-                                    </button></td>
-                            </tr>
-                    }
-                           
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-dark btn-block" @onclick="Cambiar">Cerrar Ventana</button>
-                </div>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var x in clientes)
+                                    {
+                                        <tr>
+                                            <td><a href="@x.FotoP" target="_blank"><img src="@x.FotoP" height="100" width="100" /></a></td>
+                                            <td>@x.Nombre @x.Apellido</td>
+                                            <td>
+                                                <button class="btn btn-primary btn-block" @onclick="(() => ObtenerCliente(x.ID, x.Nombre, x.Apellido))">
+                                                    SELECCIONAR
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-dark btn-block" @onclick="Cambiar">Cerrar Ventana</button>
+                        </div>
+                    </div>
+
+                }
+
+
             </div>
-
-        }
-
-
-    </div>
         </div>
 
     }
 
-    @if(vof2)
-            {
+    @if (vof2)
+    {
 
 
-<div class="contenedor-modal">
-    <div class="ventana">
-        @if (vofVehiculo)
-        {
-            <div class="card text-center overflow-auto">
+        <div class="contenedor-modal">
+            <div class="ventana">
+                @if (vofVehiculo)
+                {
+                    <div class="card text-center overflow-auto">
 
-                <div class="card-header ">
-                    Seleccionar Vehiculo
-                </div>
-                <div class="card-body ">
-                    <table class="table table-responsive-sm table-hover">
-                        <thead>
-                            <tr>
-                                <th>Foto</th>
-                                <th>Vehiculo</th>
-                                <th>Seleccionar</th>
+                        <div class="card-header ">
+                            Seleccionar Vehiculo
+                        </div>
+                        <div class="card-body ">
+                            <table class="table table-responsive-sm table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Foto</th>
+                                        <th>Vehiculo</th>
+                                        <th>Seleccionar</th>
 
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var x in vehiculos)
-                            {
-                                <tr>
-                                    <td><a href="@x.Foto" target="_blank"><img src="@x.Foto" height="100" width="100" /></a></td>
-                                    <td>@x.Marca - @x.Modelo - @x.Color</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-block" @onclick="(() => ObtenerVehiculo(x.ID, x.Marca, x.Modelo, x.Color, x.Price))">
-                                            SELECCIONAR
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var x in vehiculos)
+                                    {
+                                        <tr>
+                                            <td><a href="@x.Foto" target="_blank"><img src="@x.Foto" height="100" width="100" /></a></td>
+                                            <td>@x.Marca - @x.Modelo - @x.Color</td>
+                                            <td>
+                                                <button class="btn btn-primary btn-block" @onclick="(() => ObtenerVehiculo(x.ID, x.Marca, x.Modelo, x.Color, x.Price))">
+                                                    SELECCIONAR
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
 
-                        </tbody>
-                    </table>
-                </div>
-                <div class="card-footer">
-                    <button class="btn btn-dark btn-block" @onclick="Cambiar2">Cerrar Ventana</button>
-                </div>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-dark btn-block" @onclick="Cambiar2">Cerrar Ventana</button>
+                        </div>
+                    </div>
+                }
+
+
+
             </div>
-        }
-
-
-
-    </div>
-                </div>
-            }
+        </div>
+    }
 
 
 
 
 </div>
-@status
 
-   
-            
 
-@code {      // ----------------------------------------------------------- BEGIN -------------------------------------------------------------
+
+
+
+@code { // ----------------------------------------------------------- BEGIN -------------------------------------------------------------
 
     List<Reservas> reservas;
     List<Clientes> clientes;
@@ -187,7 +189,7 @@
 
 
 
-    void FechaCambio(ChangeEventArgs e )
+    void FechaCambio(ChangeEventArgs e)
     {
         fecha1 = Convert.ToDateTime(e.Value);
         VehiculoNombre = "";
@@ -263,7 +265,7 @@
 
                          };
 
-            clientes = datos2.ToList();
+            clientes = datos2.Where(x => x.Estado == "YES").ToList();
 
             vofCliente = true;
         }
@@ -325,8 +327,8 @@
 
             var data3 = data2.Where(x =>
             (fecha1
-            >=  x.Desde
-            &&  fecha2
+            >= x.Desde
+            && fecha2
             <= x.Hasta)
             ||
             (fecha1 <= x.Desde
@@ -349,28 +351,29 @@
                 var dato7 = JsonConvert.DeserializeObject<Dictionary<string, Vehiculos>>(content2).ToList();
 
 
-                var dato2 = (from dato in dato7 select new Vehiculos
-                {
+                var dato2 = (from dato in dato7
+                             select new Vehiculos
+                             {
 
-                    ID = dato.Key,
-                    Carga = dato.Value.Carga,
-                    Color = dato.Value.Color,
-                    Estado = dato.Value.Estado,
-                    Foto = dato.Value.Foto,
-                    Lat = dato.Value.Lat,
-                    Lng = dato.Value.Lng,
-                    Seguro = dato.Value.Seguro,
-                    Marca = dato.Value.Marca,
-                    Matricula = dato.Value.Matricula,
-                    Modelo = dato.Value.Modelo,
-                    Pasajeros = dato.Value.Pasajeros,
-                    Price = dato.Value.Price,
-                    Tipo = dato.Value.Tipo,
-                    Year = dato.Value.Year
+                                 ID = dato.Key,
+                                 Carga = dato.Value.Carga,
+                                 Color = dato.Value.Color,
+                                 Estado = dato.Value.Estado,
+                                 Foto = dato.Value.Foto,
+                                 Lat = dato.Value.Lat,
+                                 Lng = dato.Value.Lng,
+                                 Seguro = dato.Value.Seguro,
+                                 Marca = dato.Value.Marca,
+                                 Matricula = dato.Value.Matricula,
+                                 Modelo = dato.Value.Modelo,
+                                 Pasajeros = dato.Value.Pasajeros,
+                                 Price = dato.Value.Price,
+                                 Tipo = dato.Value.Tipo,
+                                 Year = dato.Value.Year
 
 
 
-                }).ToList();
+                             }).ToList();
 
 
 
@@ -426,7 +429,7 @@
 
         var res = await http.PostAsync(URI, factura2);
 
-        if(res.IsSuccessStatusCode)
+        if (res.IsSuccessStatusCode)
         {
             await ReservarVehiculo();
             ClienteNombre = "";

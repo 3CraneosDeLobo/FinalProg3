@@ -140,7 +140,7 @@ using MoreLinq.Extensions;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 255 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RVehiculos.razor"
+#line 257 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RVehiculos.razor"
        
     /////////////////
     Funciones fc = new Funciones();
@@ -159,10 +159,10 @@ using MoreLinq.Extensions;
     public string Modelo = "";
     public int Year = 2020;
     public string Color = "";
-    public string Precio = "";
+    public string Precio = "0";
     public string Tipo = "Carro";
-    public string Carga = "";
-    public string Pasajeros = "";
+    public string Carga = "0";
+    public string Pasajeros = "0";
     public string Matricula = "";
     public string Seguro = "";
 
@@ -174,12 +174,19 @@ using MoreLinq.Extensions;
     string imgURL = "";
     int cambio = 0;
 
+  
+   
+
+
+
+
     /// METODOS
 
 
     ///IMAGEN
     public async Task Cambio(IFileListEntry[] files)
     {
+        cambio = 0;
         await fc.CargarImagen(files);
 
         mensajeFoto = "Imagen Seleccionada: " + files.FirstOrDefault().Name;

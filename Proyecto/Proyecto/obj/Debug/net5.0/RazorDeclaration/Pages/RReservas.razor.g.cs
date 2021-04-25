@@ -140,8 +140,8 @@ using MoreLinq.Extensions;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 165 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RReservas.razor"
-             // ----------------------------------------------------------- BEGIN -------------------------------------------------------------
+#line 167 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\RReservas.razor"
+        // ----------------------------------------------------------- BEGIN -------------------------------------------------------------
 
     List<Reservas> reservas;
     List<Clientes> clientes;
@@ -166,7 +166,7 @@ using MoreLinq.Extensions;
 
 
 
-    void FechaCambio(ChangeEventArgs e )
+    void FechaCambio(ChangeEventArgs e)
     {
         fecha1 = Convert.ToDateTime(e.Value);
         VehiculoNombre = "";
@@ -242,7 +242,7 @@ using MoreLinq.Extensions;
 
                          };
 
-            clientes = datos2.ToList();
+            clientes = datos2.Where(x => x.Estado == "YES").ToList();
 
             vofCliente = true;
         }
@@ -304,8 +304,8 @@ using MoreLinq.Extensions;
 
             var data3 = data2.Where(x =>
             (fecha1
-            >=  x.Desde
-            &&  fecha2
+            >= x.Desde
+            && fecha2
             <= x.Hasta)
             ||
             (fecha1 <= x.Desde
@@ -328,28 +328,29 @@ using MoreLinq.Extensions;
                 var dato7 = JsonConvert.DeserializeObject<Dictionary<string, Vehiculos>>(content2).ToList();
 
 
-                var dato2 = (from dato in dato7 select new Vehiculos
-                {
+                var dato2 = (from dato in dato7
+                             select new Vehiculos
+                             {
 
-                    ID = dato.Key,
-                    Carga = dato.Value.Carga,
-                    Color = dato.Value.Color,
-                    Estado = dato.Value.Estado,
-                    Foto = dato.Value.Foto,
-                    Lat = dato.Value.Lat,
-                    Lng = dato.Value.Lng,
-                    Seguro = dato.Value.Seguro,
-                    Marca = dato.Value.Marca,
-                    Matricula = dato.Value.Matricula,
-                    Modelo = dato.Value.Modelo,
-                    Pasajeros = dato.Value.Pasajeros,
-                    Price = dato.Value.Price,
-                    Tipo = dato.Value.Tipo,
-                    Year = dato.Value.Year
+                                 ID = dato.Key,
+                                 Carga = dato.Value.Carga,
+                                 Color = dato.Value.Color,
+                                 Estado = dato.Value.Estado,
+                                 Foto = dato.Value.Foto,
+                                 Lat = dato.Value.Lat,
+                                 Lng = dato.Value.Lng,
+                                 Seguro = dato.Value.Seguro,
+                                 Marca = dato.Value.Marca,
+                                 Matricula = dato.Value.Matricula,
+                                 Modelo = dato.Value.Modelo,
+                                 Pasajeros = dato.Value.Pasajeros,
+                                 Price = dato.Value.Price,
+                                 Tipo = dato.Value.Tipo,
+                                 Year = dato.Value.Year
 
 
 
-                }).ToList();
+                             }).ToList();
 
 
 
@@ -405,7 +406,7 @@ using MoreLinq.Extensions;
 
         var res = await http.PostAsync(URI, factura2);
 
-        if(res.IsSuccessStatusCode)
+        if (res.IsSuccessStatusCode)
         {
             await ReservarVehiculo();
             ClienteNombre = "";
