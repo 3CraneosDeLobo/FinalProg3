@@ -4,7 +4,7 @@
 #pragma warning disable 0649
 #pragma warning disable 0169
 
-namespace Proyecto.Shared
+namespace Proyecto.Pages
 {
     #line hidden
     using System;
@@ -124,7 +124,15 @@ using MoreLinq.Extensions;
 #line default
 #line hidden
 #nullable disable
-    public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
+#nullable restore
+#line 2 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\Mapa.razor"
+           [Authorize]
+
+#line default
+#line hidden
+#nullable disable
+    [Microsoft.AspNetCore.Components.RouteAttribute("/mapa")]
+    public partial class Mapa : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -132,20 +140,127 @@ using MoreLinq.Extensions;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 62 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Shared\NavMenu.razor"
+#line 83 "D:\Tareas\5to Cuatrimestre\PROG 3\FINAL\Final\FinalProg3\Proyecto\Proyecto\Pages\Mapa.razor"
        
-    private bool collapseNavMenu = true;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    private void ToggleNavMenu()
+    List<Vehiculos> vehiculos;
+    List<Reservas2> reservas;
+    bool vofCarga = false;
+    bool vofFecha = false;
+    string data = "";
+   
+
+    DateTime fecha = DateTime.Now;
+
+    protected override async Task OnAfterRenderAsync(bool x)
     {
-        collapseNavMenu = !collapseNavMenu;
+
+
+
+        HttpClient http = new HttpClient();
+
+        string URI = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Vehiculos.json";
+
+        var res = await http.GetAsync(URI);
+
+        if (res.IsSuccessStatusCode)
+        {
+            var content = await res.Content.ReadAsStringAsync();
+
+            var data1 = JsonConvert.DeserializeObject<Dictionary<string, Vehiculos>>(content).ToList();
+
+            var data2 = from xd in data1
+                        select new Vehiculos
+                        {
+                            ID = xd.Key,
+                            Carga = xd.Value.Carga,
+                            Color = xd.Value.Color,
+                            Estado = xd.Value.Estado,
+                            Foto = xd.Value.Foto,
+                            Lat = xd.Value.Lat,
+                            Lng = xd.Value.Lng,
+                            Marca = xd.Value.Marca,
+                            Matricula = xd.Value.Matricula,
+                            Modelo = xd.Value.Modelo,
+                            Pasajeros = xd.Value.Pasajeros,
+                            Price = xd.Value.Price,
+                            Seguro = xd.Value.Seguro,
+                            Tipo = xd.Value.Tipo,
+                            Year = xd.Value.Year
+                        };
+
+            vehiculos = data2.ToList();
+
+            var array2 = JsonConvert.SerializeObject(data2.ToList(), Formatting.Indented);
+            if (x)
+            {
+                await JS.InvokeVoidAsync("iMapa", array2);
+                vofCarga = true;
+                StateHasChanged();
+            }
+
+
+
+        }
+
+
+
     }
+
+
+    async Task Cambio(ChangeEventArgs e)
+    {
+        vofFecha = false;
+        data = e.Value.ToString();
+        await CargarDatos();
+    }
+
+    async Task Close()
+    {
+        await JS.InvokeVoidAsync("close");
+    }
+
+
+    async Task CargarDatos()
+    {
+
+        HttpClient http = new HttpClient();
+
+        string URI = "https://finalprog3-930fc-default-rtdb.firebaseio.com/Reservas.json";
+
+        var res = await http.GetAsync(URI);
+
+        if(res.IsSuccessStatusCode)
+        {
+
+            var content = await res.Content.ReadAsStringAsync();
+
+            var data1 = JsonConvert.DeserializeObject<Dictionary<string, Reservas2>>(content).ToList();
+
+            var data2 = from xd in data1
+                        select new Reservas2
+                        {
+                            ID = xd.Key,
+                            Desde = Convert.ToDateTime(xd.Value.Desde),
+                            Hasta = Convert.ToDateTime(xd.Value.Hasta),
+                            VehiculoID = xd.Value.VehiculoID,
+                            Estado = xd.Value.Estado
+
+                        };
+
+            reservas = data2.Where(x => x.Desde > fecha && x.VehiculoID == data).OrderBy(x => x.Desde).Take(3).ToList();
+       
+            vofFecha = true;
+
+        }
+    }
+
 
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JS { get; set; }
     }
 }
 #pragma warning restore 1591

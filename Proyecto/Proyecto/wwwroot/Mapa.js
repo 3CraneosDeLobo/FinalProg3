@@ -25,12 +25,13 @@ mp.map = new google.maps.Map(document.getElementById('map'),
 /////FIN
 }
 
-function open(){
-    document.getElementById('ventana').className = "contenedor-modal";
-}
+
 
 function close(){
-    document.getElementById('ventana').className = "contenedor-modal-none";
+    document.getElementById('contenedor').className = "contenedor-modal-none";
+}
+function open() {
+    document.getElementById('contenedor').className = "contenedor-modal";
 }
 
 function addMapa(){
@@ -62,25 +63,28 @@ mapar();
     })
     }
 
-    function iMapa(datos){
+function iMapa(datos){
         mapar();
         let central = { lat: 18.489171348478873, lng: -69.92190543737865}
         let array = [[18.49264765096979, -69.9471940767545], [18.489171348478873, -69.92190543737865] ]
-       
 
-        datos.forEach(x => {
-            console.log("A ver " + x.id)
-            let labels = x.id.toString();
-            let marker = new google.maps.Marker({
-                position: {lat: x.lat, lng: x.lng},
-                label: labels,
+
+    var z = JSON.parse(datos);
+ 
+    z.forEach(x => {
+        console.log("A ver "  + x.ID)
+            let labels = x.ID;
+        let marker = new google.maps.Marker({
+            position: { lat: parseFloat(x.Lat), lng: parseFloat(x.Lng) },
+            label: { text: x.Matricula, fontSize: "20px", fontWeight: "bold", color: 'white',   },
                 map: mp.map
             })
         
             marker.addListener("click", (e) => {
                  mp.map.setZoom(16);
-                 mp.map.setCenter(marker.getPosition());
-                 getId(x.id, x.cedula, x.name,x.lname,x.tel,x.fecha, x.provincia, x.v1, x.fechaV1, x.v2, x.fechaV2);
+                mp.map.setCenter(marker.getPosition());
+                Open(x);
+                 
             }) 
         });
 
@@ -88,7 +92,29 @@ mapar();
       
 
         
+}
+
+function Open(algo) {
+    var x = document.getElementById('contenedor');
+
+    if (x.className == "contenedor-modal-none") {
+        x.className = "contenedor-modal"
     }
+
+    document.getElementById('foto').setAttribute("src", algo.Foto);
+    document.getElementById('marca').value = "MARCA: " + algo.Marca;
+    document.getElementById('modelo').value ="MODELO: "+ algo.Modelo;
+    document.getElementById('year').value = "AÑO: "+ algo.Year;
+    document.getElementById('color').value = "COLOR: "+algo.Color;
+    document.getElementById('matricula').value ="MATRICULA: "+ algo.Matricula;
+    var z = document.getElementById('data');
+    z.value = algo.ID;
+    var event = new Event('change');
+    z.dispatchEvent(event);
+
+
+
+}
 
     function latitud(queseyo){
         
@@ -102,22 +128,5 @@ mapar();
         let xd = mp.lng;
 
         return xd;
-
-    }
-
-    function getId(id,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10){
-          
-document.getElementById('_id').value = id;
-document.getElementById('_cedula').value = n1;
-document.getElementById('_name').value = n2;
-document.getElementById('_lname').value = n3;
-document.getElementById('_tel').value = n4;
-document.getElementById('_fecha').value = n5;
-document.getElementById('_provincia').value = n6;
-document.getElementById('_v1').value = n7;
-document.getElementById('_fv1').value = n8;
-document.getElementById('_v2').value = n9;
-document.getElementById('_fv2').value = n10;
-
 
     }
