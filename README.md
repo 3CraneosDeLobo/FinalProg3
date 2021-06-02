@@ -13,5 +13,5 @@
 <p>6. Reporte de Beneficios, aqui podremos ver un listado de los vehiculos, las veces que se han alquilado esos vehiculos y los beneficios totales generados.</p>
 <p>7. Reporte de Deudas, aqui podremos ver los clientes que nos deben y cuanto nos deben</p>
 <p>8. Aqui podremos ver en un mapa los vehiculos registrados por sus matriculas, al hacer click a una matricula nos abrira una ventana con los datos del vehiculo, y las proximas 3 fechas futuras en las que se ha reservado</p>
-#Si se le presenta algun error hacer el favor de comunicarmelo y tratare de resolverlo lo mas pronto posible.
-#Nota: Los registros actualmente no tienen validaciones.
+# Si se le presenta algun error hacer el favor de comunicarmelo y tratare de resolverlo lo mas pronto posible.
+# Nota: Los registros actualmente no tienen validaciones.
